@@ -1,31 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Page</title>
-    <link rel="stylesheet" href="register.css">
-</head>
-<body>
-    <div class="registration-container">
-        <h1>Register</h1>
-        <form action="register" method="post">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-
-            <button type="submit">Register</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="login-registration.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <span class="R-title">Registration </span>
+        <form action="/register" method="post">
+          <div class="input-field user">
+            <img
+              class="envelope icon"
+              src="icons/user.svg"
+              alt=""
+              width="20" />
+            <input
+              type="text"
+              name="Name"
+              id="text"
+              placeholder="Enter your name" />
+          </div>
+          <div class="input-field email">
+            <img
+              class="envelope icon"
+              src="icons/envelope.svg"
+              alt=""
+              width="20" />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="<%= locals.message || 'Enter your email' %>"
+              />
+          </div>
+          <div class="input-field password">
+            <img
+              class="lock icon"
+              src="icons/lock.svg"
+              alt=""
+              width="20" />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Enter your password" />
+          </div>
+          <div class="input-field password">
+            <img
+              class="lock icon"
+              src="icons/lock.svg"
+              alt=""
+              width="20" />
+              <input
+              type="password"
+              name="confirmPassword"
+              id="password"
+              placeholder="<%= locals.message1 || 'Confirm a password' %>"
+            />
+            
+            <img
+              class="crossed-eye"
+              src="icons/crossed-eye.svg"
+              alt=""
+              width="20" />
+          </div>
+          <div class="checkBox-item R-checkBox-item">
+            <div class="checkBox-content R-checkBox-content">
+              <input type="checkbox" name="terms" id="terms" />
+              <label for="terms">I accept all terms & conditions</label>
+            </div>
+          </div>
+          <button type="submit">Registration</button>
+          <div class="register-login-redirect">
+            <p>Already have an account? <a href="/login">login now</a></p>
+          </div>
         </form>
-
-        <!-- <div class="footer">
-            <p>Already have an account?
-                <form action="register/login" method="post">
-                    <button type="submit">Login</button>
-                  </form>
-            </p>
-        </div> -->
+      </div>
     </div>
-</body>
+  </body>
 </html>

@@ -44,10 +44,10 @@ app.post("/login", async (req, res) => {
   if (passwordMatch) {
     res.redirect("/");
   } else {
-    res.send("Wrong credentials");
+    res.render("login.ejs",{mess: "Incorrect Password"});
   }
 } else {
-  res.send("Wrong credentials");
+  res.render("login.ejs",{mess1: "Incorrect Email"});
 }
 
 });
@@ -61,6 +61,8 @@ app.get("/register", (req, res) => {
 app.post("/register", async (req, res) => {
   const email = req.body["email"];
   const password = req.body["password"];
+  const confirm = req.body["confirmPassword"];
+  const name = req.body["Name"];
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
@@ -71,20 +73,26 @@ app.post("/register", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      // User does not exist, so insert
-      await db.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
-        email,
-        hashedPassword,
-      ]);
-      res.redirect("/");
-    } else {
-      res.send("User already exists");
+      if (password === confirm) {
+        // Correct Password
+        await db.query("INSERT INTO users (username, password, name) VALUES ($1, $2, $3)", [
+          email,
+          hashedPassword,
+          name,
+        ]);
+        res.render("index.ejs", { showMessage: true });
+      } else {
+        res.render("register.ejs", { message1: "Incorrect password" });
+      }
+    }else{
+      res.render("register.ejs", { message: "The username already exists" });
     }
   } catch (error) {
     console.error("Error during registration:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 app.listen(3000, () => {
   console.log("Server working ✅");
