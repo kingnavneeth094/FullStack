@@ -1,99 +1,119 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
+import axios from "axios";
 
-// app created
 const app = express();
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");  // Set up EJS view engine
 
+const url = 'https://saurav.tech/NewsAPI/top-headlines/category/health/in.json';
 
-// Database connection done
 const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "Health",
-  password: "navshar0923",
-  port: 5432,
+    user: "postgres",
+    host: "localhost",
+    database: "Health",
+    password: "navshar0923",
+    port: 5432,
 });
 db.connect();
 
-
-// Getting the home page 
-app.get("/", (req, res) => {
-  res.render("index.ejs");
-});
-
-
-// Getting the Login page
-app.get("/login",(req,res)=>{
-  res.render("login.ejs");
-});
-
-// Handling data for a old user
-app.post("/login", async (req, res) => {
-  const email = req.body["email"];
-  const password = req.body["password"];
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const result = await db.query("SELECT username, password FROM users WHERE username = $1", [email]);
-  if (result.rows.length === 1) {
-  const dbHashedPassword = result.rows[0].password;
-  const passwordMatch = await bcrypt.compare(password, dbHashedPassword);
-  if (passwordMatch) {
-    res.redirect("/");
-  } else {
-    res.render("login.ejs",{mess: "Incorrect Password"});
-  }
-} else {
-  res.render("login.ejs",{mess1: "Incorrect Email"});
-}
-
-});
-
-// For a new user
-app.get("/register", (req, res) => {
-  res.render("register.ejs");
-});
-
-// Credentials for a new user
-app.post("/register", async (req, res) => {
-  const email = req.body["email"];
-  const password = req.body["password"];
-  const confirm = req.body["confirmPassword"];
-  const name = req.body["Name"];
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  try {
-    // Check if the user already exists
-    const result = await db.query(
-      "SELECT username FROM users WHERE username = $1",
-      [email]
-    );
-
-    if (result.rows.length === 0) {
-      if (password === confirm) {
-        // Correct Password
-        await db.query("INSERT INTO users (username, password, name) VALUES ($1, $2, $3)", [
-          email,
-          hashedPassword,
-          name,
-        ]);
-        res.render("index.ejs", { showMessage: true });
-      } else {
-        res.render("register.ejs", { message1: "Incorrect password" });
-      }
-    }else{
-      res.render("register.ejs", { message: "The username already exists" });
+app.get("/", async(req, res) => {
+    try{
+        const result = await axios.get(url);
+        const nes = JSON.stringify(result.data.articles[0].content);
+        res.render("index.ejs",{news: nes});
+    }catch{
+        console.log(error);
     }
-  } catch (error) {
-    console.error("Error during registration:", error);
-    res.status(500).send("Internal Server Error");
-  }
+});
+
+app.get("/questions",(req,res)=>{
+    res.render("questions.ejs");
+})
+
+app.get("/book",(req,res)=>{
+    res.render("book.ejs");
+})
+
+app.get("/doctors",(req,res)=>{
+    res.render("doctors.ejs");
+})
+
+app.get("/donate",(req,res)=>{
+    res.render("donate.ejs");
+})
+
+app.get("/about",(req,res)=>{
+    res.render("about.ejs");
+})
+
+app.get("/blog",(req,res)=>{
+    res.render("blog.ejs");
+})
+
+app.get("/login", (req, res) => {
+    res.render("login.ejs");
+});
+
+app.post("/login", async (req, res) => {
+    const email = req.body["email"];
+    const password = req.body["password"];
+
+    try {
+        const result = await db.query("SELECT * FROM mental WHERE email = $1", [email]);
+
+        if (result.rows.length === 1) {
+            const hashedPassword = result.rows[0].password;
+
+            if (await bcrypt.compare(password, hashedPassword)) {
+                res.redirect("/");
+            } else {
+                res.send("Wrong Password");
+            }
+        } else {
+            res.send("Wrong Email");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.get("/registration", (req, res) => {
+    res.render("registration.ejs");
+});
+
+app.post("/register", async (req, res) => {
+    const name = req.body["name"];
+    const email = req.body["email"];
+    const password = req.body["password"];
+    const confirmPassword = req.body["ConfirmPassword"];
+
+    try {
+        const result = await db.query("SELECT * FROM mental WHERE email = $1", [email]);
+
+        if (result.rows.length === 0) {
+            if (password === confirmPassword) {
+                const hashedPassword = await bcrypt.hash(password, 10);
+                await db.query("INSERT INTO mental (email, name, password) VALUES ($1, $2, $3)", [email, name, hashedPassword]);
+                res.redirect("/");
+            } else {
+                res.send("Passwords do not match");
+            }
+        } else {
+            res.send("User already exists");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 
 app.listen(3000, () => {
-  console.log("Server working ✅");
+    console.log("Server working ✅");
 });
