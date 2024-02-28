@@ -116,49 +116,62 @@
 
       const totalQuestions = Object.keys(qna).length;
 
-      function showQuestion() {
-        const currentQuestion = qna[`q${currentQuestionIndex}`];
+  function showQuestion() {
+    const currentQuestion = qna[`q${currentQuestionIndex}`];
 
-        // Display question number out of total questions
-        document.getElementById(
-          "questionCounter"
-        ).textContent = `${currentQuestionIndex}/${totalQuestions}`;
+    document.getElementById(
+      "questionCounter"
+    ).textContent = `${currentQuestionIndex}/${totalQuestions}`;
 
-        document.getElementById("questionTitle").textContent =
-          currentQuestion.question;
+    document.getElementById("questionTitle").textContent =
+      currentQuestion.question;
 
-        const optionsContainer = document.getElementById("options");
-        optionsContainer.innerHTML = "";
+    const optionsContainer = document.getElementById("options");
+    optionsContainer.innerHTML = "";
 
-        for (let i = 1; i <= 4; i++) {
-          const optionKey = `op${i}`;
-          const optionValue = currentQuestion[optionKey];
+    for (let i = 1; i <= 4; i++) {
+      const optionKey = `op${i}`;
+      const optionValue = currentQuestion[optionKey];
 
-          const optionButton = document.createElement("button");
-          optionButton.textContent = optionValue;
-          optionButton.onclick = function () {
-            console.log(`Selected option: ${optionKey}`);
-          };
+      const optionButton = document.createElement("button");
+      optionButton.textContent = optionValue;
 
-          optionsContainer.appendChild(optionButton);
+      // Use a data attribute to store the button state
+      optionButton.setAttribute("data-state", "blue");
+
+      optionButton.onclick = function () {
+        const currentState = optionButton.getAttribute("data-state");
+
+        if (currentState === "blue") {
+          optionButton.style.backgroundColor = "#007bff"; // Blue color
+          optionButton.setAttribute("data-state", "green");
+        } else {
+          optionButton.style.backgroundColor = "green";
+          optionButton.setAttribute("data-state", "blue");
         }
-      }
 
-      function Next() {
-        if (currentQuestionIndex < totalQuestions) {
-          currentQuestionIndex++;
-          showQuestion();
-        }
-      }
+        console.log(`Selected option: ${optionKey}`);
+      };
 
-      function Prev() {
-        if (currentQuestionIndex > 1) {
-          currentQuestionIndex--;
-          showQuestion();
-        }
-      }
+      optionsContainer.appendChild(optionButton);
+    }
+  }
 
+  function Next() {
+    if (currentQuestionIndex < totalQuestions) {
+      currentQuestionIndex++;
       showQuestion();
+    }
+  }
+
+  function Prev() {
+    if (currentQuestionIndex > 1) {
+      currentQuestionIndex--;
+      showQuestion();
+    }
+  }
+
+  showQuestion();
     </script>
   </body>
 </html>

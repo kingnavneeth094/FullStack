@@ -26,6 +26,8 @@
 .about-card-container{
     display:flex;
     margin:10px;
+    justify-content: center;
+    text-align: center;
 }
 .about-card{
     width:400px;
@@ -69,7 +71,9 @@
 }
 .doc-container{
     display:flex;   
-    justify-content: space-around;
+    gap: 70px;
+    justify-content: center;
+    text-align: center;
 }
 .doc-info{
     height:400px;
@@ -90,9 +94,13 @@
     top:10px;
 }
 .doc-name{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
     padding-top:130px;
     padding-left:100px;
     font-weight: bold;
+
 
 }
 .doc-wiki{

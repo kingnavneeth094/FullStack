@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
   .background-img{
-    height:500px;
+    height:650px;
     background-image:url('./images/DONATE.jpg');
     background-size: cover;
     position:relative;
