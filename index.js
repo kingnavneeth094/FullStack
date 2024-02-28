@@ -21,15 +21,26 @@ const db = new pg.Client({
 });
 db.connect();
 
-app.get("/", async(req, res) => {
-    try{
+app.get("/", async (req, res) => {
+    try {
         const result = await axios.get(url);
-        const nes = JSON.stringify(result.data.articles[0].content);
-        res.render("index.ejs",{news: nes});
-    }catch{
-        console.log(error);
+
+        const article = result.data.articles[0] || {}; // Ensure there's an article
+        const news = (article.content || '').replace(/"/g, '');
+        const auth = (article.author || '').replace(/"/g, '');
+        const title = (article.title || '').replace(/"/g, '');
+        const image = (article.urlToImage || '').replace(/"/g, '');
+
+        console.log(image);
+
+        res.render("index.ejs", { news, title, image, auth });
+    } catch (error) {
+        console.error(error);   
+        res.status(500).send("Internal Server Error");
     }
 });
+
+
 
 app.get("/questions",(req,res)=>{
     res.render("questions.ejs");

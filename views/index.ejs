@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="header.css" />
     <link rel="stylesheet" href="heading.css" />
   </head>
+  
   <body>
+    <!-- <img src="images/back-pattern.svg" class="pattern" /> -->
     <%- include("partials/header.ejs") %>
     <!--heading-->
     <section class="heading">
@@ -31,7 +33,7 @@
             journey with CALMPANION. Empowering you to find calmness amidst
             life's challenges."
           </p>
-          <a href="http://">Blogs</a>
+          <a href="/blog">Blogs</a>
         </div>
         <div class="heading-image">
           <img src="images/heading-image.svg" alt="" height="350px" />
@@ -51,6 +53,7 @@
             "Discover peace, support, and resources for your mental health
             journey with CALMPANION
           </p>
+          <!-- <a href="">Explore</a> -->
         </div>
         <div class="info-cards">
           <img
@@ -80,70 +83,81 @@
     <!--blog and navigation-->
     <section class="blog">
       <div class="blog-container">
-        <div class="main-blog" style="background-color: white"></div>
-        <% if (locals.news) { %>
-          <p><%= locals.news %></p>
-        <% } else { %>
-          <h1>Nothing here</h1>
-        <% } %>
-        
+        <div class="main-blog">
+            <div class="main-blog" style="background-color: white"></div>
+            <% if (news) { %>
+                <h1><%= auth %></h1>
+                <h2><%= title %></h2>
+                <p><%= news %></p>
+                <img src="<%= image %>" alt="">
+            <% } else { %>
+                <h1>Nothing here</h1>
+            <% } %>
+        </div>
+    </div>
+    
         <div class="navigation-cards">
-          <div class="card card-1">
-            <span>text</span>
-            <div class="link">
-              <h3>SURVEY</h3>
-              <a href="/questions">
-                <img
-                  src="icons/angle-circle-right-icon.svg"
-                  alt=""
-                  height="30"
-                  width="30" />
-              </a>
+          <div class="card-align">
+            <div class="card card-1">
+              <span>text</span>
+              <div class="link">
+                <h3>SURVEY</h3>
+                <a href="questions">
+                  <img
+                    src="icons/angle-circle-right-icon.svg"
+                    alt=""
+                    height="30"
+                    width="30" />
+                </a>
+              </div>
             </div>
-          </div>
 
-          <div class="card card-2">
-            <span>text</span>
-            <div class="link">
-              <h3>WRITE BLOG</h3>
-              <a href="/blog">
-                <img
-                  src="icons/angle-circle-right-icon.svg"
-                  alt=""
-                  height="30"
-                  width="30" />
-              </a>
+            <div class="card card-2">
+              <span>text</span>
+              <form action="/" method="POST">
+                <div class="link">
+                  <h3>WRITE BLOG</h3>
+                  <a href="/blog">
+                    <img
+                      src="icons/angle-circle-right-icon.svg"
+                      alt=""
+                      height="30"
+                      width="30" />
+                  </a>
+                </div>
+              </form>
             </div>
           </div>
+          <div class="card-align">
+            <div class="card card-3">
+              <span>text</span>
+              <div class="link">
+                <h3>BOOK APPOINTMENT</h3>
+                <a href="/book">
+                  <img
+                    src="icons/angle-circle-right-icon.svg"
+                    alt=""
+                    height="30"
+                    width="30" />
+                </a>
+              </div>
+            </div>
 
-          <div class="card card-3">
-            <span>text</span>
-            <div class="link">
-              <h3>BOOK APPOINTMENT</h3>
-              <a href="/book">
-                <img
-                  src="icons/angle-circle-right-icon.svg"
-                  alt=""
-                  height="30"
-                  width="30" />
-              </a>
+            <div class="card card-4">
+              <span>text</span>
+              <div class="link">
+                <h3>MEET DOCTORS</h3>
+                <a href="/about">
+                  <img
+                    src="icons/angle-circle-right-icon.svg"
+                    alt=""
+                    height="30"
+                    width="30" />
+                </a>
+              </div>
             </div>
           </div>
-
-          <div class="card card-4">
-            <span>text</span>
-            <div class="link">
-              <h3>MEET DOCTORS</h3>
-              <a href="/doctors">
-                <img
-                  src="icons/angle-circle-right-icon.svg"
-                  alt=""
-                  height="30"
-                  width="30" />
-              </a>
-            </div>
-          </div>
-        </div>  
+        </div>
       </div>
     </section>
     <%- include("partials/footer.ejs") %>
@@ -177,7 +191,6 @@
     </script>
   </body>
 </html>
-
 
 
 
