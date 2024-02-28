@@ -25,7 +25,7 @@ app.get("/", async (req, res) => {
     try {
         const result = await axios.get(url);
 
-        const article = result.data.articles[0] || {}; // Ensure there's an article
+        const article = result.data.articles[10] || {}; // Ensure there's an article
         const news = (article.content || '').replace(/"/g, '');
         const auth = (article.author || '').replace(/"/g, '');
         const title = (article.title || '').replace(/"/g, '');
