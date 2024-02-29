@@ -22,6 +22,13 @@ const db = new pg.Client({
 });
 db.connect();
 
+// Initial data for blog posts (temporary, should be fetched from the database)
+let blogPost = [
+    { id: 1, topic: 'Welcome to Our Mental Health Blogging Community! 🌈', Author: 'Sample', content: "Hello, wonderful readers! 🌟 Step into a space where understanding unfolds, and support blossoms. We're thrilled to have you join our community dedicated to mental well-being.In this cozy corner of the internet, we explore stories of resilience, share experiences, and foster connections that contribute to a healthier mind and heart. Whether you're seeking inspiration, information, or just a comforting read, you're in the right place. Let's embark on a journey together, breaking the stigma surrounding mental health and fostering a compassionate community. Your well-being matters, and here, you're not alone. Welcome to a space where stories empower, and together, we thrive." }
+  ];
+  
+
+// Rendering the main page
 app.get("/", async (req, res) => {
     try {
         const result = await axios.get(url);
@@ -40,35 +47,81 @@ app.get("/", async (req, res) => {
 });
 
 
-
+// fetching the questions page
 app.get("/questions",(req,res)=>{
     res.render("questions.ejs");
 })
 
+app.get("/blog",(req,res)=>{
+    res.render("view.ejs",{posts: blogPost});
+})
+
+
+// For booking an appointment
 app.get("/book",(req,res)=>{
     res.render("book.ejs");
 })
 
+
+// For seeing the list of doctors
 app.get("/doctors",(req,res)=>{
     res.render("doctors.ejs");
 })
 
+
+// For donating 
 app.get("/donate",(req,res)=>{
     res.render("donate.ejs");
 })
 
+
+// For seeing the doctors
 app.get("/about",(req,res)=>{
     res.render("about.ejs");
 })
 
-app.get("/blog",(req,res)=>{
-    res.render("blog.ejs");
+
+// for adding a new blog
+app.get("/addBlog",(req,res)=>{
+    res.render("addBlog.ejs");
 })
 
+app.get("/view",(req,res)=>{
+    res.render("view.ejs",{posts: blogPost});
+})
+
+app.post("/view", (req, res) => {
+    const newPost = {
+        id: blogPost.length + 1,
+        topic: req.body.topic,
+        email: req.body.email,
+        content: req.body.content, // Corrected the case to match the textarea name
+    };
+    blogPost.push(newPost);
+    res.redirect('/view');
+});
+
+// Handle deleting a blog post, update the blogPost array and redirect to the view page
+app.post("/delete/:id", (req, res) => {
+    const postId = parseInt(req.params.id);
+    blogPost = blogPost.filter(post => post.id !== postId);
+    res.redirect("/view");
+  });
+
+
+
+
+app.get("/view", (req, res) => {
+    res.render("view.ejs",{posts: blogPost});
+});
+
+// For summoning the login page
 app.get("/login", (req, res) => {
     res.render("login.ejs");
 });
 
+
+// Login for the old user 
 app.post("/login", async (req, res) => {
     const email = req.body["email"];
     const password = req.body["password"];
@@ -93,10 +146,14 @@ app.post("/login", async (req, res) => {
     }
 });
 
+
+// For the new user
 app.get("/registration", (req, res) => {
     res.render("registration.ejs");
 });
 
+
+// For the new user
 app.post("/register", async (req, res) => {
     const name = req.body["name"];
     const email = req.body["email"];
