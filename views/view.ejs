@@ -10,18 +10,18 @@
 </head>
 <body>
     <section class="blog-list">
-        <% posts.forEach((post,index) =>{   %>
+        <% posts.forEach((post, index) => { %>
             <article>
                 <h2><%= post.topic %></h2>
-                <h3><%= post.Author %></h3>
-                <p><%= post.content %></p>
-                <% if(index>= 1){ %>
-                    <form action="/delete/<%= post.id %>" method="post">
-                        <button type="submit">Delete Post</button>
+                <p style="font-weight: bolder;"  class="author">By <%= post.Author %></p>
+                <p class="content"><%= post.content %></p>
+                <% if (index >= 1) { %>
+                    <form class="delete-form" action="/delete/<%= post.id %>" method="post">
+                        <button class="delete-btn" type="submit">Delete Post</button>
                     </form>
-                <%}%>
+                <% } %>
             </article>
-        <%}); %>
-    </section>
+        <% }); %>
+    </section>    
 </body>
 </html>

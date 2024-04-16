@@ -14,7 +14,7 @@
    
     <section class="schedule">
       <!--personal information-->
-      <form class="container" id="schedule">
+      <form class="container" id="schedule" method="POST" action="/">
         <div class="inner-cointainer personal" >
           <h2 class="personal-information heading">Personal</h2>
           <div class="fullname-input input-div">
@@ -65,8 +65,7 @@
           <div class="description">
             <h3>CALMPANION</h3>
             <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Reprehenderit, suscipit.
+              Discover peace, support, and resources for your mental health journey with CALMPANION. Empowering you to find calmness amidst life's challenges.
             </p>
           </div>
           <div class="date-time">
@@ -84,8 +83,8 @@
             <label for="reason">Reason for visit</label>
             <select class="reason" id="reason" name="reason" required>
               <option value="">Select Reason</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
+              <option value="A">ADHD</option>
+              <option value="B">Dyslexia</option>
             </select>
           </div>
 
@@ -101,7 +100,8 @@
               </option>
             </select>
           </div>
-          <input type="submit" href="#" class="confirm" id="sub"></i>
+          <!-- <input type="submit"  class="confirm" id="sub"></i> -->
+          <button type="submit">Submit</button>
         </div>
       </form>
     </section>
